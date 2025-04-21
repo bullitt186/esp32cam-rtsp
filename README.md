@@ -1,15 +1,11 @@
-# ESP32CAM-RTSP
+# ESP32CAM-RTSP-PrusaConnect :video_camera:
 
 [![Platform IO CI](https://github.com/rzeldent/esp32cam-rtsp/actions/workflows/main.yml/badge.svg)](https://github.com/rzeldent/esp32cam-rtsp/actions/workflows/main.yml)
 
 Simple [RTSP](https://en.wikipedia.org/wiki/Real_Time_Streaming_Protocol), [HTTP JPEG Streamer](https://en.wikipedia.org/wiki/Motion_JPEG) and image server with configuration through the web interface.
+It also have settings to configure Prusa Connect accesspoint in order to automatically send snapshots of the printer so that it can appear in the 'camera' tab in Prusa Connect.
 
-> [!IMPORTANT]  
-> New branch available! Here [branch: develop](https://github.com/rzeldent/esp32cam-rtsp/tree/develop)
-> This branch supports all the current devices and the Seeed Studio Xiao esp32s3!
-> Please use this and let me know if this works for you!
-
-Flashing this software on a ESP32CAM module will make it a **RTSP streaming camera** server, a **HTTP Motion JPEG streamer** and a **HTTP image server**.
+Flashing this software on a ESP32CAM module will make it a **RTSP streaming camera** server, a **HTTP Motion JPEG streamer**, a **HTTP image server** and finally will serve as an esp32 camera for your Printer connected on Prusa Connect. 
 
 Supported protocols
 
@@ -204,7 +200,7 @@ Open the project in a new window. Run the following tasks using the ```Terminal 
 
 To monitor the behavior run the task, run: ```PlatformIO: Monitor (esp32cam)```
 
-## Setting up the ESP32CAM-RTSP
+## Setting up the ESP32CAM-RTSP-PrusaConnect
 
 After the programming of the ESP32, there is no configuration present. This needs to be added.
 To connect initially to the device open the WiFi connections and select the WiFi network / access point called **ESP32CAM-RTSP**.
@@ -214,7 +210,7 @@ After connecting, the browser should automatically open the status page.
 In case this does not happens automatically, connect to [http://192.168.4.1](http://192.168.4.1).
 This page will display the current settings and status. On the bottom, there is a link to the config. Click on this link.
 
-This link brings up the configuration screen when connecting fot the first time.
+This link brings up the configuration screen when connecting for the first time.
 
 ![Configuration screen](assets/Configuration.png)
 
@@ -228,6 +224,44 @@ When finished press ```Apply``` to save the configuration. The screen will redir
 Here it is possible to reboot the device so the settings take effect.
 It is also possible to restart manually by pressing the reset button.
 
+## Connecting to Prusa Connect
+
+### Preliminary steps
+ - Have a prusa connect account
+ - Have your printer set in Prusa Connect
+
+### Instructions
+ - Connect to you Prusa Connect account and go to your printer
+ - In the "Camera" tab, click on "add a new camera"
+ - Give a name to your camera
+ - Click on the scan code:
+ ![Add camera screen](assets/addCamera.png)
+ - In the page that opens, enter the debugging console by pressing (F12) or Ctrl+Shift+i
+ - Verify that the camera is "ready" and started
+ - In the debugging console, go to the "Network tab"
+ - Refresh the page (F5) 
+ - Click on the "snapshot" event:
+ ![capture snapshot event1](assets/prusaConnectSnapshot1.png)
+ - Get the URL displayed
+ - Go down to the end of the header data:
+ ![capture snapshot event2](assets/prusaConnectSnapshot2.png)
+ - Note down the "fingerprint" code and the "token" value.
+ - Close the page, but don't delete the camera you created.
+
+ - Go to the ESP32Cam-RTSP-PrusaConnect configuration screen
+ - In the section "Prusa Connect":
+ ![PrusaConnect configuration](assets/configPrusa.png)
+ - Enter the URL get from the debugging console if the default value is not the right one
+ - Enter the fingerprint value
+ - Enter the token value
+ - Set the snapshot frequency. Possible values are every 10s / 30s / 60s
+ - Check the option if you which to light up the flash when taking the picture.
+ - Save the configuration at last and return to home page
+ - Restart (if restart is not working, restart the camera manually)
+ - After restart and initialisation (by default, after 30s), the first pictures should start to appear on prusa connect for your camera.
+
+
+
 ## Connecting to the configuration
 
 After the initial configuration and the device is connected to an access point, the device can be configured over http.
@@ -238,7 +272,7 @@ When a connection is made to [http://esp32cam-rtsp](http://esp32cam-rtsp) the st
 
 In case changes have been made to the configuration, this is shown and the possibility to restart is given.
 
-Clicking on the ```change configuration``` button will open the configuration. It is possible that a password dialog is shown before entering.
+Clicking on the ```change settings``` button will open the configuration. It is possible that a password dialog is shown before entering.
 If this happens, for the user enter 'admin' and for the password the value that has been configured as the Access Point password.
 
 ## Connecting to the RTSP stream
@@ -356,6 +390,7 @@ Make sure it is connected the right way around (Camera pointing away from the bo
 
 ## Credits
 
+esp32cam-rtsp-PrusaConnect is a fork of esp32cam-rtsp by rzeldent.
 esp32cam-rtsp depends on PlatformIO, Bootstrap 5 and Micro-RTSP by Kevin Hester.
 
 ## Change history

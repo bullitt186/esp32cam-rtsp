@@ -1,13 +1,19 @@
 #pragma once
 
-#define APP_TITLE "ESP32CAM-RTSP"
-#define APP_VERSION "1.0"
+#define APP_TITLE "ESP32CAM-RTSP-PrusaConnect"
+#define APP_VERSION "1.1"
 
 #define WIFI_SSID "ESP32CAM-RTSP"
 #define WIFI_PASSWORD nullptr
 #define CONFIG_VERSION "1.6"
 
 #define OTA_PASSWORD "ESP32CAM-RTSP"
+
+#define PRUSACONNECT_URL "https://webcam.connect.prusa3d.com/c/snapshot"
+#define PC_FINGERPRINT ""
+#define PC_TOKEN ""
+#define DEFAULT_SNAP_FREQUENCY "30"
+#define DEFAULT_USEFLASH false
 
 #define RTSP_PORT 554
 
