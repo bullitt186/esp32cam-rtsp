@@ -405,6 +405,8 @@ esp32cam-rtsp depends on PlatformIO, Bootstrap 5 and Micro-RTSP by Kevin Hester.
   - Added support for Seeed Xiao esp32s3
   - New build system
   - Updated documentation
+- July 2023
+  - Added the Prusa Connect push snapshot mode 
 - March 2023
   - Added options to set PSRAM / Frame buffers
   - Added JPEG Motion streaming
