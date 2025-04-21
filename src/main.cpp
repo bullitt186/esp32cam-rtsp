@@ -17,11 +17,15 @@
 #include <moustache.h>
 #include <settings.h>
 
+#define FREQ_STRING_LEN 5
+static const char pcfreqValues[][FREQ_STRING_LEN]={"10","30","60"};
+static const char pcfreqNames[][FREQ_STRING_LEN]={"10 s","30 s","60 s"};
+
 // HTML files
 extern const char index_html_min_start[] asm("_binary_html_index_min_html_start");
 
-auto param_group_board = iotwebconf::ParameterGroup("board", "Board settings");
-auto param_board = iotwebconf::Builder<iotwebconf::SelectTParameter<sizeof(camera_configs[0])>>("bt").label("Board").optionValues((const char *)&camera_configs).optionNames((const char *)&camera_configs).optionCount(sizeof(camera_configs) / sizeof(camera_configs[0])).nameLength(sizeof(camera_configs[0])).defaultValue(DEFAULT_CAMERA_CONFIG).build();
+//auto param_group_board = iotwebconf::ParameterGroup("board", "Board settings");
+//auto param_board = iotwebconf::Builder<iotwebconf::SelectTParameter<sizeof(camera_configs[0])>>("bt").label("Board").optionValues((const char *)&camera_configs).optionNames((const char *)&camera_configs).optionCount(sizeof(camera_configs) / sizeof(camera_configs[0])).nameLength(sizeof(camera_configs[0])).defaultValue(DEFAULT_CAMERA_CONFIG).build();
 
 auto param_group_prusaconnect = iotwebconf::ParameterGroup("prusac","Prusa Connect");
 auto param_prusaconnect_url = iotwebconf::Builder<iotwebconf::TextTParameter<255>>("pcu").label("Prusa Connect URL").defaultValue(PRUSACONNECT_URL).build();
@@ -56,6 +60,8 @@ auto param_hmirror = iotwebconf::Builder<iotwebconf::CheckboxTParameter>("hm").l
 auto param_vflip = iotwebconf::Builder<iotwebconf::CheckboxTParameter>("vm").label("Vertical mirror").defaultValue(DEFAULT_VERTICAL_MIRROR).build();
 auto param_dcw = iotwebconf::Builder<iotwebconf::CheckboxTParameter>("dcw").label("Downsize enable").defaultValue(DEFAULT_DCW).build();
 auto param_colorbar = iotwebconf::Builder<iotwebconf::CheckboxTParameter>("cb").label("Colorbar").defaultValue(DEFAULT_COLORBAR).build();
+auto param_group_peripheral = iotwebconf::ParameterGroup("io", "peripheral settings");
+auto param_led_intensity = iotwebconf::Builder<iotwebconf::UIntTParameter<byte>>("li").label("LED intensity").defaultValue(DEFAULT_LED_INTENSITY).min(0).max(100).build();
 
 // Camera
 OV2640 cam;
@@ -234,9 +240,9 @@ void trigger_prusaConnect()
   }
 
   // Remove old images stored in the frame buffer
-  auto frame_buffers = param_frame_buffers.value();
-  while (frame_buffers--)
-    cam.run();
+  //auto frame_buffers = param_frame_buffers.value();
+  //while (frame_buffers--)
+  //   cam.run();
 
   auto fb_len = cam.getSize();
   auto fb = (uint8_t *)cam.getfb();
